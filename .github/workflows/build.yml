@@ -1,0 +1,40 @@
+name: Build NoInternet.dylib
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:  # ручной запуск
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app
+
+      - name: Build dylib
+        run: |
+          xcrun -sdk iphoneos clang \
+            -arch arm64 \
+            -miphoneos-version-min=15.0 \
+            -dynamiclib \
+            -fobjc-arc \
+            -O2 \
+            -Wall \
+            -framework Foundation \
+            -o NoInternet.dylib \
+            NoInternet.m fishhook.c
+
+      - name: Ad-hoc sign
+        run: codesign -f -s - NoInternet.dylib
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: NoInternet.dylib
+          path: NoInternet.dylib
+          retention-days: 90
