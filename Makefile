@@ -44,6 +44,8 @@ CFLAGS = \
 # Линковка
 LDFLAGS = \
 	-framework Foundation \
+	-framework SystemConfiguration \
+	-framework Network \
 	-lSystem
 
 # ============================================================================

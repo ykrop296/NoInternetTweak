@@ -26,6 +26,8 @@ jobs:
             -O2 \
             -Wall \
             -framework Foundation \
+            -framework SystemConfiguration \
+            -framework Network \
             -o NoInternet.dylib \
             NoInternet.m fishhook.c
 
